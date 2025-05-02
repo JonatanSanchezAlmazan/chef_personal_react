@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Header from './Components/Header/Header';
 
@@ -17,6 +17,7 @@ function App() {
         <Route path="/recipes" element={<Recipe />} />
         <Route path="/recipe/:name" element={<RecipeDetail />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   );

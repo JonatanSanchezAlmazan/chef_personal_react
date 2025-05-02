@@ -7,7 +7,7 @@ const RecipeDetail = () => {
   const { recipeById } = state;
 
   return (
-    <Box width="90%" height="100%" display="flex" flexDirection="column" justifyContent="center" alignItems="center" padding="20px" gap="50px" border="2px solid #319795" marginTop="20px">
+    <Box width="90%" height="100%" display="flex" flexDirection="column" justifyContent="center" alignItems="center" padding="20px" gap="50px" border="2px solid #319795" marginTop="20px" marginBottom="50px">
       <Heading as="h2" size="lg">
         {recipeById.title}
       </Heading>
