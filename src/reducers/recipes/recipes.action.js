@@ -8,16 +8,19 @@ export const getRecipes = async ({ dispatch }) => {
       payload: JSON.parse(cachedRecipes)
     });
   } else {
-    const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${import.meta.env.VITE_API_KEY}&number=20`);
+    try {
+      const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${import.meta.env.VITE_API_KEY}&number=20`);
+      const data = await response.json();
 
-    const data = await response.json();
+      dispatch({
+        type: 'UPLOAD_RECIPES',
+        payload: data.results
+      });
 
-    dispatch({
-      type: 'UPLOAD_RECIPES',
-      payload: data.results
-    });
-
-    localStorage.setItem('recipes', JSON.stringify(data.results));
+      localStorage.setItem('recipes', JSON.stringify(data.results));
+    } catch (error) {
+      dispatch({ type: 'SHOW_ERROR' });
+    }
   }
 };
 
@@ -39,24 +42,33 @@ export const deleteToFavorite = ({ recipe, state, dispatch }) => {
 };
 
 export const getRecipeById = async ({ id, dispatch }) => {
-  const response = await fetch(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${import.meta.env.VITE_API_KEY}`);
+  try {
+    const response = await fetch(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${import.meta.env.VITE_API_KEY}`);
 
-  const data = await response.json();
+    const data = await response.json();
 
-  dispatch({ type: 'ADD_RECIPE_BY_ID', payload: data });
+    dispatch({ type: 'ADD_RECIPE_BY_ID', payload: data });
+  } catch (error) {
+    dispatch({ type: 'SHOW_ERROR' });
+  }
 };
 
 export const getRecipesRandom = async ({ number, dispatch }) => {
-  dispatch({ type: 'LOADING' });
-  const response = await fetch(`https://api.spoonacular.com/recipes/random?number=${number}&apiKey=${import.meta.env.VITE_API_KEY}`);
+  try {
+    dispatch({ type: 'LOADING' });
+    const response = await fetch(`https://api.spoonacular.com/recipes/random?number=${number}&apiKey=${import.meta.env.VITE_API_KEY}`);
 
-  const data = await response.json();
-  console.log(data);
+    const data = await response.json();
 
-  dispatch({
-    type: 'ADD_RECIPES_RANDOM',
-    payload: data.recipes
-  });
+    dispatch({
+      type: 'ADD_RECIPES_RANDOM',
+      payload: data.recipes
+    });
 
-  dispatch({ type: 'SET_IS_RANDOM', payload: true });
+    dispatch({ type: 'SET_IS_RANDOM', payload: true });
+  } catch (error) {
+    console.log(error);
+
+    dispatch({ type: 'SHOW_ERROR' });
+  }
 };
