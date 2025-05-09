@@ -14,16 +14,12 @@ export const useRandomRecipesSearch = () => {
   const handleSearch = async () => {
     if (!selectedValue) return;
     setLoading(true);
-    try {
-      await getRecipesRandom({
-        number: selectedValue,
-        dispatch
-      });
-    } catch (err) {
-      console.error('Error fetching recipes:', err);
-    } finally {
-      setLoading(false);
-    }
+
+    await getRecipesRandom({
+      number: selectedValue,
+      dispatch
+    });
+    setLoading(false);
   };
   return {
     selectedValue,
